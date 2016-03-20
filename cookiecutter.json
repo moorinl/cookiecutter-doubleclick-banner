@@ -1,0 +1,26 @@
+{
+    "banner_name": "Banner",
+    "banner_slug": "{{ cookiecutter.banner_name.lower().replace(' ', '_') }}",
+    "width": "728",
+    "height": "90",
+    "use_easeljs": [
+        "yes",
+        "no"
+    ],
+    "use_movieclip": [
+        "yes",
+        "no"
+    ],
+    "use_preloadjs": [
+        "yes",
+        "no"
+    ],
+    "use_soundjs": [
+        "yes",
+        "no"
+    ],
+    "use_tweenjs": [
+        "yes",
+        "no"
+    ]
+}
