@@ -1,0 +1,10 @@
+{
+  "name": "{{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}",
+  "version": "1.0.0",
+  "description": "HTML5 DoubleClick banner.",
+  "scripts": {
+    "build": "zip {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.zip {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.css {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.js index.html"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
