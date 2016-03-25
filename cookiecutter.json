@@ -3,6 +3,10 @@
     "banner_slug": "{{ cookiecutter.banner_name.lower().replace(' ', '_') }}",
     "width": "728",
     "height": "90",
+    "add_dynamic_data": [
+        "yes",
+        "no"
+    ],
     "use_easeljs": [
         "yes",
         "no"

@@ -16,11 +16,34 @@
 
             function enablerInitialized() {
                 if (Enabler.isPageLoaded()) {
-                    politeInit();
+                    init();
                 } else {
-                    Enabler.addEventListener(studio.events.StudioEvent.PAGE_LOADED, politeInit);
+                    Enabler.addEventListener(studio.events.StudioEvent.PAGE_LOADED, init);
                 }
             }
+
+            function init() {
+                {% if cookiecutter.add_dynamic_data == "yes" %}enableDyanmicData();{% endif %}
+                politeInit();
+            }
+
+            {% if cookiecutter.add_dynamic_data == "yes" %}
+            function enableDyanmicData() {
+                Enabler.setProfileId(12345);
+
+                var devDynamicContent = {};
+                devDynamicContent.SampleElement = [{}];
+                devDynamicContent.SampleElement[0]._id = 0;
+                devDynamicContent.SampleElement[0].headline = "Some headline";
+                devDynamicContent.SampleElement[0].image_url = {};
+                devDynamicContent.SampleElement[0].image_url.Url = "http://yourServer/sample.jpg";
+                devDynamicContent.SampleElement[0].landing_url = {};
+                devDynamicContent.SampleElement[0].landing_url.Url = "http://www.yoursite.com";
+                window.devDynamicContent = devDynamicContent;
+
+                Enabler.setDevDynamicContent(devDynamicContent);
+            }
+            {% endif %}
 
             function politeLoad(urls, onComplete) {
                 var l = urls.length,
@@ -40,7 +63,7 @@
                 var extCSS=document.createElement("link");
                 extCSS.setAttribute("rel", "stylesheet");
                 extCSS.setAttribute("type", "text/css");
-                extCSS.setAttribute("href", Enabler.getFilename("{{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.css")); 
+                extCSS.setAttribute("href", Enabler.getUrl("{{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.css")); 
                 document.getElementsByTagName("head")[0].appendChild(extCSS);
 
                 politeLoad([
@@ -57,7 +80,8 @@
         </script>
         <script>
             function bgExitHandler(e) {
-                Enabler.exit('Background Exit');
+                {% if cookiecutter.add_dynamic_data == "yes" %}Enabler.exitOverride('Background Exit', dynamicContent.SampleElement[0].landing_url.Url);{% endif %}
+                {% if cookiecutter.add_dynamic_data == "no" %}Enabler.exit('Background Exit');{% endif %}
             }
 
             document.getElementById('bg-exit').addEventListener('click', bgExitHandler, false);
