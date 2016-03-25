@@ -21,3 +21,5 @@ The cookiecutter template features the following options:
 * Polite load for JavaScripts and StyleSheets
 * Custom ``main.js`` and ``main.css``
 * IFrame preview file ``preview.html``
+* Dynamic data ([read documentation](https://support.google.com/richmedia/answer/3526354?hl=en&ref_topic=3548445))
+* Node.js build for packaging DoubleClick Studio compatible zip file
