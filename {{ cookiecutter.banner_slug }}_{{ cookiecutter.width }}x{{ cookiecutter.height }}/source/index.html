@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{{ cookiecutter.banner_name }} {{ cookiecutter.width }}x{{ cookiecutter.height }}</title>
+		<style>
+			#bg-exit {
+				background-color: rgba(255,255,255,0);
+				cursor: pointer;
+				height: {{ cookiecutter.width }}px;
+				position: absolute;
+				width: {{ cookiecutter.height }}px;
+				z-index: 1000;
+			}
+		</style>
+    </head>
+    <body>
+        <div id="bg-exit"></div>
+        <script src="https://s0.2mdn.net/ads/studio/Enabler.js"></script>
+		{% if cookiecutter.add_dynamic_data == "yes" %}
+		<script>
+        Enabler.setProfileId(12345);
+
+        var devDynamicContent = {};
+        devDynamicContent.SampleElement = [{}];
+        devDynamicContent.SampleElement[0]._id = 0;
+		devDynamicContent.SampleElement[0].Exit_URL = {};
+		devDynamicContent.SampleElement[0].Exit_URL.Url = "http://www.moori.nl";
+
+        Enabler.setDevDynamicContent(devDynamicContent);
+		</script>
+		{% endif %}
+        <script>
+            if (!Enabler.isInitialized()) {
+                Enabler.addEventListener(studio.events.StudioEvent.INIT, enablerInitialized);
+            } else {
+                enablerInitialized();
+            }
+
+            function enablerInitialized() {
+                if (Enabler.isPageLoaded()) {
+                    politeInit();
+                } else {
+                    Enabler.addEventListener(studio.events.StudioEvent.PAGE_LOADED, politeInit);
+                }
+            }
+
+            function politeLoad(urls, onComplete) {
+                var l = urls.length,
+                    loaded = 0,
+                    checkProgress = function() {
+                        if (++loaded === l && onComplete) {
+                            onComplete();
+                        }
+                    },
+                    i;
+                for (i = 0; i < l; i++) {
+                    Enabler.loadScript(urls[i], checkProgress);
+                }
+            }
+
+            function politeInit() {
+                politeLoad([
+                    {% if cookiecutter.use_easeljs == "yes" %}'https://s0.2mdn.net/ads/studio/cached_libs/easeljs_0.8.2_937c3ec68021211c056f61c9ceaccffd_min.js',{% endif %}
+                    {% if cookiecutter.use_movieclip == "yes" %}'https://s0.2mdn.net/ads/studio/cached_libs/movieclip_0.8.1_927f07f1635e6a2a1aa76e79f9decf86_min.js',{% endif %}
+                    {% if cookiecutter.use_preloadjs == "yes" %}'https://s0.2mdn.net/ads/studio/cached_libs/preloadjs_0.6.2_d7b96570d4552592ae479162e546cb25_min.js',{% endif %}
+                    {% if cookiecutter.use_soundjs == "yes" %}'https://s0.2mdn.net/ads/studio/cached_libs/soundjs_0.6.2_4c1425ce52ff873d9fb7aa4daf23b94d_min.js',{% endif %}
+                    {% if cookiecutter.use_tweenjs == "yes" %}
+                    'https://s0.2mdn.net/ads/studio/cached_libs/tweenlite_1.18.0_56fa823cfbbef1c2f4d4346f0f0e6c3c_min.js',
+					'https://s0.2mdn.net/ads/studio/cached_libs/easepack_1.18.0_ed5816e732515f56d96a67f6a2a15ccb_min.js',
+					'https://s0.2mdn.net/ads/studio/cached_libs/cssplugin_1.18.0_71489205621d46cbe88348eeb8fe493f_min.js',
+					'https://s0.2mdn.net/ads/studio/cached_libs/timelinemax_1.18.0_d3d029f5637c6d5b293e574d258b5eee_min.js'
+					{% endif %}
+                ], function() {
+		            function bgExitHandler(e) {
+		                {% if cookiecutter.add_dynamic_data == "yes" %}Enabler.exitOverride('Background Exit', dynamicContent.SampleElement[0].Exit_URL.Url);{% endif %}
+		                {% if cookiecutter.add_dynamic_data == "no" %}Enabler.exit('Background Exit');{% endif %}
+		            }
+
+					document.getElementById('bg-exit').addEventListener('click', bgExitHandler, false);
+                })
+            }
+        </script>
+    </body>
+</html>

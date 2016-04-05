@@ -1,10 +1,15 @@
 {
-  "name": "{{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}",
-  "version": "1.0.0",
-  "description": "HTML5 DoubleClick banner.",
-  "scripts": {
-    "build": "zip {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.zip {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.css {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.js index.html"
-  },
-  "license": "UNLICENSED",
-  "private": true
+	"name": "{{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}",
+	"version": "1.0.0",
+	"description": "HTML5 DoubleClick banner.",
+	"scripts": {
+		"build": "npm run minify && npm run bundle",
+		"bundle": "zip -j {{ cookiecutter.banner_slug }}_{{ cookiecutter.width }}x{{ cookiecutter.height }}.zip index_{{ cookiecutter.width }}x{{ cookiecutter.height }}.html",
+		"minify": "html-minifier -o index_{{ cookiecutter.width }}x{{ cookiecutter.height }}.html --remove-comments --remove-tag-whitespace --minify-css --minify-js source/index.html"
+	},
+	"license": "UNLICENSED",
+	"private": true,
+	"devDependencies": {
+		"html-minifier": "^1.4.0"
+	}
 }
